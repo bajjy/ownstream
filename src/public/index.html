@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>autostream</title>
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: rgb(12, 12, 12);
+            color: white;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        div.container {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            min-width: 640px;
+            min-height: 480px;
+            margin: auto;
+        }
+
+        video {
+            display: block;
+            max-width: 1200px;
+            width: 100%;
+            height: auto;
+            margin: auto;
+        }
+
+        .loading {
+            display: none;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            margin: auto;
+            width: 100px;
+            height: 100px;
+        }
+
+        .loading.spin {
+            display: block;
+        }
+
+        .loading img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .player {
+            display: none;
+        }
+
+        .player.active {
+            display: block;
+        }
+        .unmute {
+            cursor: pointer;
+        }
+        .unmute span {
+            display: none;
+        }
+        .unmute span:first-child {
+            display: inline-block;
+        }
+        .unmute.muted span:first-child {
+            display: none;
+        }
+        .unmute.muted span:last-child {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1></h1>
+    <div class="container">
+
+        <video src="" class="player three" preload="auto"></video>
+        <video src="" class="player two" preload="auto"></video>
+        <video src="" class="player one" preload="auto"></video>
+
+        <!-- <video id="vvideo" width="640" height="490" controls="true" preload="auto"></video> -->
+        <div class="loading spin">
+            <img src="loading.svg" alt="loading stream...">
+        </div>
+    </div>
+    <h2 class="unmute muted">
+        <span>
+            click to unmute
+        </span>
+        <span>
+            mute video
+        </span>
+    </h2>
+    <script>
+        const socket = io();
+        const video = [document.querySelector('.three'), document.querySelector('.two'), document.querySelector('.one')];
+        const spinner = document.querySelector('.loading');
+        const header = document.querySelector('h1');
+        const mute = document.querySelector('.unmute');
+
+        var size = 2;
+        var buffering = false;
+
+        function place(p) {
+            if (file == 2) return file = 0;
+        };
+        function canplay(pos, e) {
+            if (buffering === false) return buffering = pos;
+            let prevPos = buffering;
+
+            [...video].map(v => {
+                v.classList.remove('active');
+                //v.muted = "muted";
+            });
+
+            video[prevPos].classList.add('active');
+            //video[prevPos].muted = false;
+            video[prevPos].play();
+            buffering = pos;
+        };
+        function toggleMute() {
+            if (mute.classList.contains('muted')) {
+                [...video].map(v => {
+                    v.muted = !v.muted;
+                });
+                return mute.classList.remove('muted');
+            };
+            [...video].map(v => {
+                v.muted = !v.muted;
+            });
+            mute.classList.add('muted');
+        };
+
+        toggleMute()
+
+        socket.on('upd', e => {
+            let age = e.ages[e.playlist];
+            let pos = e.playlist;
+
+            video[pos].dataset.age = age;
+            video[pos].src = `vid-${e.playlist}.webm`;
+
+            spinner.classList.remove('spin');
+            canplay(pos, e)
+        });
+
+        socket.on('server', e => {
+            header.innerHTML = e.title;
+        });
+
+        mute.addEventListener('click', e => toggleMute());
+
+        // function fetchVideo(url) {
+        //     return fetch(url).then(function (response) {
+        //         return response.blob();
+        //     });
+        // };
+            // video[pos].addEventListener('canplay', () => {
+            //     if (!buffering) return buffering = e.playlist
+            //     let prevPos = (video.length - 1) - buffering;
+
+            //     spinner.classList.remove('spin');
+
+            //     [...video].map(v => v.classList.remove('active'));
+
+            //     console.log(video[prevPos])
+            //     video[prevPos].classList.add('active');
+            //     video[prevPos].play();
+
+            //     buffering = e.playlist
+            // })
+            // fetchVideo(`vid-${e.playlist}.webm`)
+            //     .then(blob => {
+            //         let bloburl = URL.createObjectURL(blob);
+            //         video.src = bloburl;
+            //         video.oncanplay
+            //         //video.play()
+            //     });
+    </script>
+
+
+</body>
+
+</html>

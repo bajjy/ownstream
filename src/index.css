@@ -1,0 +1,145 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+
+video.main {
+  display: block;
+  max-width: 500px;
+  max-height: 256px;
+  width: 100%;
+  height: auto;
+  margin: auto;
+}
+
+body {
+  min-height: 100vh;
+  background-color: #36363a;
+  color: white;
+}
+
+h1 {
+  padding-top: 2em;
+}
+h1 a {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hidden {
+  display: none;
+}
+.container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.menu {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  max-width: 20em;
+  padding-left: 1em;
+}
+.menu > div {
+  cursor: pointer;
+  width: 100%;
+}
+.menu .logo {
+  font-weight: 900;
+  font-size: 2em;
+}
+.menu h4 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-weight: 100;
+}
+.list {
+  width: 30%;
+}
+
+.list .item {
+  display: flex;
+  cursor: pointer;
+  margin-bottom: 0.5em;
+  border-radius: 0.25em;
+  height: 3em;
+  box-shadow: inset 0 0 0 1px white;
+}
+.list .item:hover {
+  background-color: white;
+  color: black;
+}
+.list .item .thumb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 30%;
+  height: 4em;
+  overflow: hidden;
+  background-color: black;
+  border-radius: 5px;
+}
+.list .item .thumb video {
+  height: 4em;
+}
+.list .item .info {
+  display: flex;
+  align-items: center;
+  padding-left: 0.25em;
+  overflow: hidden;
+}
+.video {
+  width: 50%;
+  padding-left: 1em;
+  padding-top: 5.6em;
+}
+.video .float {
+  /* position: fixed; */
+  /* max-width: 40%; */
+}
+.video video {
+  background-color: black;
+  min-height: calc(10em - 2px);
+  width: 100%;
+  max-width: 40em;
+  max-height: 40em;
+  border-radius: 0.25em;
+  border: 1px solid white;
+}
+.video input,
+.video button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  font-size: 1.5em;
+  line-height: 1em;
+}
+.video input::placeholder {
+  color: #aaaaaa;
+}
+.video input {
+  padding-top: calc(1em - 2px);
+  padding-bottom: 1px;
+  border-bottom: 1px solid white;
+  color: white;
+}
+.video button {
+  cursor: pointer;
+  padding: 0.5em;
+  background-color: aliceblue;
+  box-shadow: inset 0 0 0 1px white;
+  border-radius: 0.25em;
+}
+.video button:disabled {
+  cursor: default;
+  opacity: 0.25;
+}
+.video .run-info > div {
+  margin-bottom: 0.5em;
+}
+.video .run-link {
+  color: white;
+}
