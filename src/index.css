@@ -2,6 +2,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   padding: 0;
   margin: 0;
+  user-select: none;
 }
 
 
@@ -97,6 +98,7 @@ h1 a {
   padding-top: 5.6em;
 }
 .video .float {
+  background-color: transparent;
   /* position: fixed; */
   /* max-width: 40%; */
 }
@@ -109,37 +111,45 @@ h1 a {
   border-radius: 0.25em;
   border: 1px solid white;
 }
-.video input,
-.video button {
+input,
+button {
   padding: 0;
   border: none;
   background-color: transparent;
   font-size: 1.5em;
   line-height: 1em;
 }
-.video input::placeholder {
+input::placeholder {
   color: #aaaaaa;
 }
-.video input {
+input {
   padding-top: calc(1em - 2px);
   padding-bottom: 1px;
   border-bottom: 1px solid white;
   color: white;
 }
-.video button {
+button {
   cursor: pointer;
   padding: 0.5em;
   background-color: aliceblue;
   box-shadow: inset 0 0 0 1px white;
   border-radius: 0.25em;
 }
-.video button:disabled {
+button:disabled {
   cursor: default;
   opacity: 0.25;
 }
-.video .run-info > div {
+.run-info > div {
   margin-bottom: 0.5em;
 }
-.video .run-link {
+.run-link {
   color: white;
+}
+
+.bt-refresh {
+  font-size: 1em;
+}
+.bt-refresh img {
+  width: 1em;
+  vertical-align: middle;
 }

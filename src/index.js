@@ -33,7 +33,15 @@ function setMainMenu() {
             label: 'File',
             submenu: [
                 {
-                    label: 'exit',
+                    label: 'Restart',
+                    //accelerator: 'Shift+CmdOrCtrl+H',
+                    click() {
+                        app.relaunch();
+                        app.exit();
+                    }
+                },
+                {
+                    label: 'Exit',
                     //accelerator: 'Shift+CmdOrCtrl+H',
                     click() {
                         app.quit();
@@ -97,6 +105,7 @@ init();
 ipcMain.on('kill', async () => {
     url = false;
     await ngrok.disconnect();
+    ngrok.kill();
     server.stopServer();
 });
 ipcMain.on('ngrok', async (event, arg) => {

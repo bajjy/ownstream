@@ -1,4 +1,4 @@
-const { desktopCapturer, remote, ipcRenderer, shell } = require('electron');
+const { desktopCapturer, remote, ipcRenderer, shell, clipboard } = require('electron');
 const { writeFile, writeFileSync, existsSync, unlinkSync, createWriteStream } = require('fs');
 const path = require('path');
 const MultiStreamsMixer = require('multistreamsmixer');
@@ -27,6 +27,7 @@ const newMultistream = menu.querySelector('.multistream');
 
 //video
 const videoElement = document.querySelector('video');
+const btRefresh = document.querySelector('.bt-refresh');
 const runTitle = document.querySelector('.run-title');
 const runLink = document.querySelector('.run-link');
 const runStream = document.querySelector('.run-stream');
@@ -55,11 +56,40 @@ var view = {
             sourceList.classList.remove('hidden');
             videoBlock.classList.remove('hidden');
         },
-        async videoPreview() {
+        showWindows(inputSources) {
+            btRefresh.disabled = false;
+            sourceList.innerHTML = '';
+            inputSources.map(async (src) => {
+                let elem = document.createElement('div');
+                //let stream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                elem.classList.add('item')
+                elem.innerHTML = /*html */`
+                    <!--div class="thumb">
+                        <video muted="muted" autoplay="autoplay"></video>
+                    </div-->            
+                    <div class="info">
+                        ${src.name}
+                    </div>            
+        
+                `;
+                elem.addEventListener('click', e => {
+                    view.menu.elem = elem;
+                    view.menu.activeSource = src;
+                    playPreview();
+                    changeView('videoPreview');
+                });
+        
+                //elem.querySelector('video').srcObject = stream;
+                sourceList.appendChild(elem);
+            });
+        },
+        videoPreview() {
             runStream.disabled = false;
             runTitle.innerText = view.menu.activeSource.name;
         },
         startingStream() {
+            btRefresh.disabled = true;
             runStream.disabled = true;
             runStream.innerText = 'starting...';
         },
@@ -84,6 +114,8 @@ var view = {
         },
         stopStream() {
             let data = view.stream.ngrok;
+
+            btRefresh.disabled = false;
 
             runLink.href = '';
             runLink.innerText = 'stream url';
@@ -135,8 +167,32 @@ body.addEventListener('click', event => {
     shell.openExternal(link);
 });
 
+btRefresh.addEventListener('click', async (e) => {
+    stopStreaming();
+    view.views.start();
+});
+
 newStream.addEventListener('click', async (e) => {
     await getSourcesPreview()
+});
+
+runLink.addEventListener('contextmenu', e => {
+    const copyOpenMenu = Menu.buildFromTemplate([
+            {
+                label: 'Copy',
+                click: () => {
+                    clipboard.writeText(e.target.innerText, 'selection')
+                }
+            },
+            {
+                label: 'Open',
+                click: () => {
+                    e.target.click();
+                }
+            }
+        ]);
+
+    copyOpenMenu.popup();
 });
 
 runStream.addEventListener('click', async (e) => {
@@ -160,9 +216,9 @@ stopStreaming();
 view.views.start();
 
 
-function changeView(v) {
+function changeView(v, arg) {
     let vv = view.views[v];
-    if (vv) vv();
+    if (vv) vv(arg);
 };
 
 function runStopMic() {
@@ -237,30 +293,7 @@ async function getSourcesPreview() {
         return false
     });
 
-    inputSources.map(async (src) => {
-        let elem = document.createElement('div');
-        //let stream = await navigator.mediaDevices.getUserMedia(constraints);
-        
-        elem.classList.add('item')
-        elem.innerHTML = /*html */`
-            <!--div class="thumb">
-                <video muted="muted" autoplay="autoplay"></video>
-            </div-->            
-            <div class="info">
-                ${src.name}
-            </div>            
-
-        `;
-        elem.addEventListener('click', e => {
-            view.menu.elem = elem;
-            view.menu.activeSource = src;
-            playPreview();
-            changeView('videoPreview');
-        });
-
-        //elem.querySelector('video').srcObject = stream;
-        sourceList.appendChild(elem);
-    });
+    changeView('showWindows', inputSources);
 
 };
 
