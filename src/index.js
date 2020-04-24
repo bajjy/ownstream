@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -27,18 +27,23 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 
 app.commandLine.appendSwitch("ignore-certificate-errors");
 
-
-// const localtunnel = require('localtunnel');
-//const serverless = "http://serverless.social";
-// async function makeTunnel() {
-    
-//     console.log('your stream is here:');
-//     let tunnel = await localtunnel({ port /*, host: serverless */ });
-
-//     console.log('your stream is here:');
-//     console.log(tunnel.url);
-// }
-
+function setMainMenu() {
+    const template = [
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'exit',
+                    //accelerator: 'Shift+CmdOrCtrl+H',
+                    click() {
+                        app.quit();
+                    }
+                }
+            ]
+        }
+    ];
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
 const createWindow = () => {
     // Create the browser window.
     const mainWindow = new BrowserWindow({
@@ -59,6 +64,7 @@ const createWindow = () => {
 
     // Open the DevTools.
     mainWindow.webContents.openDevTools();
+    setMainMenu()
     global.shareObject['server'] = server;
 };
 
@@ -99,7 +105,7 @@ ipcMain.on('ngrok', async (event, arg) => {
     tunnels = await ngrokApi.get('api/tunnels');
     console.log(arg)
     server.runServer(arg);
-    event.reply('async-ngrok', {url, tunnels: JSON.parse(tunnels)}) 
+    event.reply('async-ngrok', { url, tunnels: JSON.parse(tunnels) })
 });
 
 // In this file you can include the rest of your app's specific main process

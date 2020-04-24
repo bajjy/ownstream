@@ -6,6 +6,7 @@
     <title>autostream</title>
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
     <style>
         body {
             padding: 0;
@@ -83,11 +84,10 @@
     <h1></h1>
     <div class="container">
 
-        <video src="" class="player three" preload="auto"></video>
-        <video src="" class="player two" preload="auto"></video>
-        <video src="" class="player one" preload="auto"></video>
+        <video src="./vid-0.webm" class="player three" preload="auto"></video>
+        <video src="./vid-1.webm" class="player two" preload="auto"></video>
+        <video src="./vid-2.webm" class="player one" preload="auto"></video>
 
-        <!-- <video id="vvideo" width="640" height="490" controls="true" preload="auto"></video> -->
         <div class="loading spin">
             <img src="loading.svg" alt="loading stream...">
         </div>
@@ -109,6 +109,13 @@
 
         var size = 2;
         var buffering = false;
+        var timeout = false;
+
+        Object.defineProperty(HTMLMediaElement.prototype, 'isPlaying', {
+            get: function(){
+                return !!(this.currentTime > 0 && !this.paused && !this.ended && this.readyState > 2);
+            }
+        });
 
         function place(p) {
             if (file == 2) return file = 0;
@@ -116,17 +123,24 @@
         function canplay(pos, e) {
             if (buffering === false) return buffering = pos;
             let prevPos = buffering;
+            //st();
 
+            spinner.classList.remove('spin');
             [...video].map(v => {
                 v.classList.remove('active');
-                //v.muted = "muted";
             });
 
             video[prevPos].classList.add('active');
-            //video[prevPos].muted = false;
+            //if (!video[prevPos].isPlaying) video[prevPos].play();
             video[prevPos].play();
+            
+            // setTimeout(() => {
+            //     video[e.next].play();
+            //     video[e.next].classList.add('preplay');
+            // }, e.timings - 1000)
             buffering = pos;
         };
+
         function toggleMute() {
             if (mute.classList.contains('muted')) {
                 [...video].map(v => {
@@ -143,16 +157,37 @@
         toggleMute()
 
         socket.on('upd', e => {
+
             let age = e.ages[e.playlist];
             let pos = e.playlist;
+            let nxt = e.next;
+            
+            [...video].map(v => {
+                v.classList.remove('next');
+            });
 
+            video[nxt].classList.add('next');
             video[pos].dataset.age = age;
             video[pos].src = `vid-${e.playlist}.webm`;
 
-            spinner.classList.remove('spin');
-            canplay(pos, e)
+            
+            
+
+            canplay(pos, e);
+        });
+let aa = false;
+function st() {
+    if (aa) return;
+    setInterval(() => {
+        [...video].map(v => {
+            v.classList.remove('bff');
         });
 
+        video[buffering].classList.add('bff')
+        video[buffering].play();
+    }, 1900);
+    aa = true;
+}
         socket.on('server', e => {
             header.innerHTML = e.title;
         });

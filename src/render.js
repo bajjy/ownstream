@@ -100,12 +100,12 @@ var view = {
             
         },
         switchMic() {
-            if (micTrack.enabled) return runMic.innerText = 'Microphone Enable';
-            runMic.innerText = 'Microphone Disable';
+            if (micTrack.enabled) return runMic.innerText = 'Enable Microphone';
+            runMic.innerText = 'Disable Microphone';
         },
         switchAudio() {
-            if (audioTrack.enabled) return runSound.innerText = 'Sound Enable';
-            runSound.innerText = 'Sound Disable';   
+            if (audioTrack.enabled) return runSound.innerText = 'Enable Sound';
+            runSound.innerText = 'Disable Sound';
         }
     }
 };
@@ -123,7 +123,8 @@ let audioTrack;
 let socket;
 let interval;
 let file = 0;
-let timings = 3000;
+let depth = 2;
+let timings = 2000;
 let ages = [0, 0, 0];
 
 
@@ -332,7 +333,8 @@ function newvolumeControl(stream) {
     //audioElement.srcObject = window.localStream; //for playback
     //you can add this stream to pc object
     // pc.addStream(window.localStream);
-}
+};
+
 
 function seq() {
     interval = setInterval(() => {
@@ -341,7 +343,7 @@ function seq() {
         setTimeout(() => {
             md.stop();
         }, timings);
-        if (file == 2) return file = 0;
+        if (file == depth) return file = 0;
         ++file;
 
     }, timings);
@@ -349,8 +351,7 @@ function seq() {
 function rec(stream, i) {
     const options = {
         mimeType: 'video/webm; codecs="opus,vp8"',
-        videoBitsPerSecond: 200000,
-        width: {exact: 3920}
+        videoBitsPerSecond: 2000000//2500000
     };
     let chunks = [];
     let mediaRecorder = new MediaRecorder(stream, options);
@@ -362,8 +363,11 @@ function rec(stream, i) {
             type: options
         });
         const buffer = Buffer.from(await blob.arrayBuffer());
+
         socket.emit('playlist', {
             playlist: i,
+            next: i + 1 > depth ? 0 : i + 1,
+            timings: timings,
             ages
         });
         ++ages[i];
@@ -377,4 +381,4 @@ function handleSave(ee, i = 0) {
     let pth = path.join(__dirname, 'public', `vid-${i}.webm`); //`./public/vid-${i}.webm`
 
     writeFileSync(pth, ee, () => console.log('video saved successfully!'));
-}
+};
