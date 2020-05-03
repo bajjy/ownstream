@@ -55,7 +55,7 @@ function setMainMenu() {
 const createWindow = () => {
     // Create the browser window.
     const mainWindow = new BrowserWindow({
-        icon: path.join(__dirname, 'src', 'favicon.png'),
+        title: "Ownstream",
         width: 1200,
         height: 800,
         minWidth: 800,
@@ -63,16 +63,17 @@ const createWindow = () => {
         webPreferences: {
             nodeIntegration: true,
             webSecurity: false
-        }
+        },
+        backgroundColor: '#36363a',
+        icon: path.join(__dirname, '../', 'assets/icons/png/64x64.png')
     });
 
-    // and load the index.html of the app.
+    mainWindow.on('page-title-updated', e => e.preventDefault());
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
-    //mainWindow.loadURL('http://localhost:1489/app');
-
-    // Open the DevTools.
+    mainWindow.setTitle('Ownstream');
     mainWindow.webContents.openDevTools();
-    setMainMenu()
+    setMainMenu();
+    
     global.shareObject['server'] = server;
 };
 

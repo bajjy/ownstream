@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
     packagerConfig: {},  
     buildIdentifier: 'pre-alpha',
@@ -10,7 +12,9 @@ module.exports = {
                 productDescription: 'Your own broadcasting channel. No registration, no subscriptions, your data stays on your machine.',
                 options: {
                     maintainer: 'Constantine Dobrovolskiy',
-                    homepage: 'https://bajjy.com'
+                    homepage: 'https://bajjy.com',
+                    icon: path.resolve(__dirname, "assets/icons/win/icon.ico"),
+                    iconUrl: path.resolve(__dirname, "assets/icons/win/icon.ico")
                 }
             }
         },
@@ -22,7 +26,8 @@ module.exports = {
                 productDescription: 'Your own broadcasting channel. No registration, no subscriptions, your data stays on your machine.',
                 options: {
                     maintainer: 'Constantine Dobrovolskiy',
-                    homepage: 'https://bajjy.com'
+                    homepage: 'https://bajjy.com',
+                    icon: path.resolve(__dirname, "assets/icons/png/64x64.png")
                 }
             }
         },
@@ -35,6 +40,7 @@ module.exports = {
                 options: {
                     maintainer: 'Constantine Dobrovolskiy',
                     homepage: 'https://bajjy.com',
+                    icon: path.resolve(__dirname, "assets/icons/mac/icon.icns"),
                     format: 'ULFO'
                 }
             }
