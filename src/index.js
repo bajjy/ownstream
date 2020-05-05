@@ -71,7 +71,7 @@ const createWindow = () => {
     mainWindow.on('page-title-updated', e => e.preventDefault());
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
     mainWindow.setTitle('Ownstream');
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
     setMainMenu();
     
     global.shareObject['server'] = server;

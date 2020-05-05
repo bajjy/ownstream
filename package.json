@@ -9,7 +9,10 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "build-win": "electron-packager . --platform=win32 --asar=true --prune=true --out=out --icns=./assets/icons/mac/icon.icns --overwrite",
+    "build-linux": "electron-packager . --platform=linux --out=out --icons=assets/icons/png/64x64.png --overwrite",
+    "build-mac": "electron-packager . --platform=darwin --out=out --icons=assets/icons/mac/icon.icns --overwrite"
   },
   "keywords": [
     "broadcasting",

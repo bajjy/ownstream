@@ -1,7 +1,12 @@
 const path = require('path');
 
 module.exports = {
-    packagerConfig: {},  
+    packagerConfig: {
+        dir: './',
+        platform: 'all',
+        overwrite: true,
+        icon: path.resolve(__dirname, 'assets/icons/win/icon.ico')
+    },
     buildIdentifier: 'pre-alpha',
     makers: [
         {
@@ -14,7 +19,8 @@ module.exports = {
                     maintainer: 'Constantine Dobrovolskiy',
                     homepage: 'https://bajjy.com',
                     icon: path.resolve(__dirname, "assets/icons/win/icon.ico"),
-                    iconUrl: path.resolve(__dirname, "assets/icons/win/icon.ico")
+                    iconUrl: path.resolve(__dirname, "assets/icons/win/icon.ico"),
+                    setupIcon: path.resolve(__dirname, "assets/icons/win/icon.ico")
                 }
             }
         },
@@ -27,7 +33,7 @@ module.exports = {
                 options: {
                     maintainer: 'Constantine Dobrovolskiy',
                     homepage: 'https://bajjy.com',
-                    icon: path.resolve(__dirname, "assets/icons/png/64x64.png")
+                    icon: "assets/icons/png/64x64.png"
                 }
             }
         },
@@ -40,20 +46,22 @@ module.exports = {
                 options: {
                     maintainer: 'Constantine Dobrovolskiy',
                     homepage: 'https://bajjy.com',
-                    icon: path.resolve(__dirname, "assets/icons/mac/icon.icns"),
+                    icon: "assets/icons/mac/icon.icns",
                     format: 'ULFO'
                 }
             }
         }
+        // {
+        //   "name": "@electron-forge/maker-wix",
+        //   "config": {
+        //     "ui": {
+        //       "chooseDirectory": true,
+        //       "images": {
+        //         "background": "[...]/path/to/background-493x312.bmp",
+        //         "banner": "[...]/path/to/banner-493x58.bmp"
+        //       }
+        //     }
+        //   }
+        // }
     ]
 }
-
-//   {
-//     packagerConfig: { ... },
-//     electronRebuildConfig: { ... },
-//     makers: [ ... ],
-//     publishers: [ ... ],
-//     plugins: [ ... ],
-//     hooks: { ... },
-//     buildIdentifier: 'my-build'
-//   }
