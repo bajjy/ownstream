@@ -37,8 +37,22 @@ module.exports = {
                 }
             }
         },
+        // {
+        //     name: '@electron-forge/maker-dmg',
+        //     config: {
+        //         name: 'ownstream',
+        //         productName: 'Ownstream',
+        //         productDescription: 'Your own broadcasting channel. No registration, no subscriptions, your data stays on your machine.',
+        //         options: {
+        //             maintainer: 'Constantine Dobrovolskiy',
+        //             homepage: 'https://bajjy.com',
+        //             icon: "assets/icons/mac/icon.icns",
+        //             format: 'ULFO'
+        //         }
+        //     }
+        // },
         {
-            name: '@electron-forge/maker-dmg',
+            name: '@electron-forge/maker-flatpak',
             config: {
                 name: 'ownstream',
                 productName: 'Ownstream',
@@ -46,8 +60,7 @@ module.exports = {
                 options: {
                     maintainer: 'Constantine Dobrovolskiy',
                     homepage: 'https://bajjy.com',
-                    icon: "assets/icons/mac/icon.icns",
-                    format: 'ULFO'
+                    icon: "assets/icons/png/64x64.png"
                 }
             }
         }
